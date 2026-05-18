@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resume Tailor — Kruthika</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #fafaf7;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 24px 16px 60px;
+    line-height: 1.5;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 24px; font-weight: 600; margin: 0 0 4px; }
+  .tagline { color: #666; font-size: 13px; margin-bottom: 24px; }
+  .card {
+    background: #fff;
+    border: 1px solid #e5e3da;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  label { display: block; font-size: 13px; color: #555; margin-bottom: 6px; font-weight: 500; }
+  input[type="text"], textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid #d4d2c8;
+    border-radius: 6px;
+    background: #fff;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+  input[type="text"]:focus, textarea:focus { outline: 2px solid #2563eb; outline-offset: -1px; border-color: transparent; }
+  textarea { resize: vertical; min-height: 200px; }
+  button {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 18px;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    background: #1a1a1a;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.05s;
+  }
+  button:hover { background: #333; }
+  button:active { transform: scale(0.98); }
+  button.secondary { background: #fff; color: #1a1a1a; border-color: #d4d2c8; }
+  button.secondary:hover { background: #f4f2eb; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 16px 0; }
+  .stat { background: #f4f2eb; border-radius: 8px; padding: 12px 16px; }
+  .stat-label { font-size: 12px; color: #666; margin-bottom: 4px; }
+  .stat-value { font-size: 20px; font-weight: 600; }
+  .stat-value.small { font-size: 14px; line-height: 1.3; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .kw {
+    background: #e6f1fb;
+    color: #0c447c;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .kw.matched { background: #e1f5ee; color: #085041; }
+  .preview { font-size: 12px; line-height: 1.55; }
+  .preview .role { margin-bottom: 12px; }
+  .preview .role-head { display: flex; justify-content: space-between; font-weight: 600; }
+  .preview .role-sub { font-style: italic; color: #666; margin-bottom: 4px; }
+  .preview ul { margin: 0; padding-left: 18px; }
+  .preview li { margin-bottom: 2px; }
+  .preview .section-head { font-weight: 600; border-top: 1px solid #e5e3da; padding-top: 8px; margin-top: 8px; margin-bottom: 8px; }
+  .header-block { text-align: center; margin-bottom: 12px; }
+  .header-block .name { font-weight: 600; font-size: 14px; }
+  .header-block .title { color: #666; font-size: 12px; font-style: italic; }
+  .header-block .contact { font-size: 11px; color: #888; }
+  .small { font-size: 12px; color: #666; }
+  pre {
+    background: #f4f2eb;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    font-family: inherit;
+    margin: 0;
+  }
+  .editable {
+    width: 100%;
+    min-height: 40px;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    line-height: 1.5;
+    resize: vertical;
+    color: #1a1a1a;
+  }
+  .editable:hover { background: #f9f7f0; }
+  .editable:focus { background: #fff; border-color: #2563eb; outline: none; }
+  .hidden { display: none; }
+  .err { background: #fcebeb; color: #791f1f; padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-top: 12px; }
+  .ok { background: #e1f5ee; color: #085041; padding: 8px 12px; border-radius: 6px; font-size: 12px; display: inline-block; margin-left: 8px; }
+  details { margin-top: 8px; }
+  summary { font-size: 12px; color: #2563eb; cursor: pointer; user-select: none; }
+  .proj-row { padding: 6px 0; border-bottom: 1px solid #f0eee5; font-size: 12px; }
+  .proj-row:last-child { border-bottom: none; }
+  .proj-row .name { font-weight: 600; }
+  .proj-row .score { color: #888; font-size: 11px; }
+  .reason { color: #888; font-style: italic; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Resume tailor</h1>
+  <div class="tagline">Paste a JD → tailored resume + cover letter in 2 seconds. No API, no cost.</div>
+
+  <div class="card">
+    <label for="company">Company name</label>
+    <input id="company" type="text" placeholder="e.g. Notion, Snowflake, Cloudflare" />
+
+    <label for="title-override" style="margin-top: 14px;">Job title (paste exactly from the JD)</label>
+    <input id="title-override" type="text" placeholder="e.g. Senior Product Manager, Growth" />
+
+    <label for="jd" style="margin-top: 14px;">Full job description</label>
+    <textarea id="jd" placeholder="Paste the entire JD here. Length doesn't matter — paste it all."></textarea>
+    <div class="small" id="jd-stats" style="margin-top: 4px;">0 characters</div>
+
+    <div class="row">
+      <button id="run">Tailor resume + cover letter</button>
+      <button id="clear" class="secondary">Clear</button>
+      <span id="status" class="small"></span>
+    </div>
+  </div>
+
+  <div id="output" class="hidden">
+
+    <div class="card">
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Role bucket</div>
+          <div class="stat-value small" id="s-bucket">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Keywords matched</div>
+          <div class="stat-value" id="s-kw">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Projects picked</div>
+          <div class="stat-value" id="s-proj">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Match score</div>
+          <div class="stat-value" id="s-score">—</div>
+        </div>
+      </div>
+
+      <details>
+        <summary>Keywords pulled from the JD</summary>
+        <div class="keywords" id="kw-list" style="margin-top: 8px;"></div>
+      </details>
+
+      <details>
+        <summary>Why these 3 projects?</summary>
+        <div id="proj-debug" style="margin-top: 8px;"></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-weight:600;">Resume preview</div>
+        <div class="small">Edit any bullet inline if you want to tweak</div>
+      </div>
+      <div class="preview" id="resume-preview"></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-weight:600;">Cover letter</div>
+        <div class="small">Edit inline before downloading</div>
+      </div>
+      <textarea id="cover-edit" class="editable" style="min-height:240px;border:1px solid #e5e3da;padding:12px;border-radius:6px;font-size:13px;line-height:1.7;"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-top: 0;">
+        <button id="dl-resume">Download resume (.docx)</button>
+        <button id="dl-cover" class="secondary">Download cover letter (.docx)</button>
+        <button id="copy-cover" class="secondary">Copy cover letter</button>
+        <span id="dl-status" class="small"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="error" class="err hidden"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script>
+const MASTER = {
+  name: "Kruthika Yeshwant Sonwalkar",
+  contact: "San Jose, CA  |  (669) 281-6756  |  kruthika.sonwalkar@sjsu.edu  |  linkedin.com/in/kruthika-sonwalkar",
+  experience: [
+    {
+      id: "linkedin",
+      company: "LinkedIn",
+      title: "Senior Product Strategy Associate",
+      location: "Bangalore, India",
+      dates: "Jul 2022 \u2013 Dec 2024",
+      bullets: {
+        pm: [
+          "Shipped 4 AI-powered features generating $1.2M in new ARR by conducting 200+ enterprise customer interviews and synthesizing findings into JTBD frameworks, PRDs, and OKR-driven roadmaps",
+          "Partnered with Product, UX, and Engineering to ship redesigned onboarding and compliance workflows, reducing time-to-first-value 28% and user drop-off 48% for Fortune 500 accounts ($2M+ ARR)",
+          "Owned Vertical Engagement Model across industry segments, driving 35% increase in feature adoption and reducing enterprise churn $500K annually",
+          "Drove weekly executive readouts on launch metrics and competitive positioning across Product, Engineering, and GTM, accelerating 2 high-impact features by 6 weeks"
+        ],
+        pmm: [
+          "Launched 4 AI-powered features generating $1.2M in new ARR; crafted positioning and messaging from 200+ enterprise customer interviews synthesized into PRDs and GTM roadmaps",
+          "Repositioned onboarding and compliance workflows with Product, UX, and Engineering, reducing time-to-first-value 28% and user drop-off 48% for Fortune 500 accounts ($2M+ ARR)",
+          "Owned Vertical Engagement Model that personalized messaging across industry segments, driving 35% increase in feature adoption and reducing enterprise churn $500K annually",
+          "Enabled GTM with weekly executive readouts on launch metrics and competitive positioning, accelerating 2 high-impact features by 6 weeks"
+        ],
+        gtm: [
+          "Drove $1.2M in new ARR through 4 AI-powered feature launches, scaling enterprise adoption via 200+ customer interviews and OKR-driven GTM roadmaps",
+          "Scaled enterprise adoption by partnering with Product, UX, and Engineering on onboarding redesign, reducing time-to-first-value 28% and user drop-off 48% for Fortune 500 accounts ($2M+ ARR)",
+          "Built Vertical Engagement Model that drove 35% increase in feature adoption and reduced enterprise churn $500K annually across industry segments",
+          "Executed weekly executive readouts on launch metrics, adoption signals, and competitive positioning, accelerating 2 high-impact features by 6 weeks"
+        ],
+        strategy: [
+          "Structured customer insight from 200+ enterprise interviews into JTBD frameworks, PRDs, and OKR-driven roadmaps that launched 4 AI-powered features generating $1.2M in new ARR",
+          "Quantified product impact across Fortune 500 accounts ($2M+ ARR), modeling onboarding and compliance workflow redesigns that reduced time-to-first-value 28% and user drop-off 48%",
+          "Modeled Vertical Engagement strategy across industry segments, driving 35% increase in feature adoption and reducing enterprise churn $500K annually",
+          "Recommended roadmap reprioritization through weekly executive readouts on launch metrics and competitive positioning, accelerating 2 high-impact features by 6 weeks"
+        ]
+      }
+    },
+    {
+      id: "growthx",
+      company: "GrowthX Fellowship",
+      title: "Product Strategy & Growth Fellow",
+      location: "Bangalore, India",
+      dates: "Oct 2023 \u2013 Jan 2024",
+      bullets: {
+        pm: [
+          "Shipped 3 AI-powered product experiments from concept to launch, defining success metrics, hypothesis testing frameworks, and measuring impact on engagement and adoption",
+          "Iterated on 3 experiments that increased user engagement 15% and week-one adoption 30%, delivering experiment readouts to cross-functional stakeholders"
+        ],
+        pmm: [
+          "Launched 3 AI-powered features end-to-end with positioning, success metrics, and hypothesis-driven experiments measuring engagement and adoption impact",
+          "Drove 15% increase in user engagement and 30% increase in week-one adoption across 3 experiments, delivering readouts to cross-functional stakeholders"
+        ],
+        gtm: [
+          "Drove 3 AI-powered product experiments from concept to launch, defining success metrics and GTM hypotheses measuring engagement and adoption",
+          "Scaled engagement 15% and week-one adoption 30% across 3 experiments through rapid iteration and cross-functional stakeholder readouts"
+        ],
+        strategy: [
+          "Structured experimentation framework for 3 AI-powered features, defining success metrics, hypotheses, and measuring impact on engagement and adoption",
+          "Quantified impact of 3 product experiments that increased user engagement 15% and week-one adoption 30%, recommending roadmap priorities to cross-functional stakeholders"
+        ]
+      }
+    },
+    {
+      id: "omnify",
+      company: "Omnify, Inc.",
+      title: "Product Marketing Manager",
+      location: "Bangalore, India",
+      dates: "Nov 2020 \u2013 Jun 2022",
+      bullets: {
+        pm: [
+          "Shipped 5+ B2B SaaS features end-to-end, defining success metrics and coordinating cross-functional execution to iterate on roadmap, driving $200K incremental revenue",
+          "Built feature prioritization framework using customer feedback, usage analytics, and competitive analysis, increasing customer retention 20% and reducing planning time 40%",
+          "Drove 30% qualified lead growth through data-driven experimentation with product messaging, positioning, and user acquisition flows, driving 50% pipeline growth"
+        ],
+        pmm: [
+          "Launched 5+ B2B SaaS features with messaging frameworks, value propositions, and sales enablement materials (pitch decks, one-pagers), driving $200K incremental revenue",
+          "Built competitive intelligence repository with battlecards and win/loss analyses using customer feedback and competitive research, increasing customer retention 20%",
+          "Drove 30% qualified lead growth through A/B experimentation with product messaging and positioning targeting mid-market and enterprise segments, driving 50% pipeline growth"
+        ],
+        gtm: [
+          "Launched 5+ B2B SaaS features end-to-end with cross-functional execution, driving $200K incremental revenue and accelerating GTM motion",
+          "Built prioritization framework using customer feedback, usage analytics, and competitive analysis, increasing customer retention 20% and reducing planning time 40%",
+          "Scaled qualified lead generation 30% through data-driven experimentation with messaging and acquisition flows targeting mid-market and enterprise, driving 50% pipeline growth"
+        ],
+        strategy: [
+          "Structured roadmap for 5+ B2B SaaS feature launches, defining success metrics and coordinating cross-functional execution that drove $200K incremental revenue",
+          "Modeled feature prioritization framework using customer feedback, usage analytics, and competitive analysis, increasing customer retention 20% and reducing planning time 40%",
+          "Quantified impact of messaging and positioning experiments that improved qualified lead generation 30% and drove 50% pipeline growth across mid-market and enterprise"
+        ]
+      }
+    }
+  ],
+  projects: [
+    { id: "cloudsignal", lead: "CloudSignal \u2014 AI Feedback Intelligence Platform", body: "Built a full-stack tool on Cloudflare Workers and Workers AI; ingests multi-channel feedback, classifies sentiment and urgency with LLMs, and surfaces prioritized insights in real-time", keywords: ["ai","llm","ml","platform","b2b","saas","analytics","feedback","cloud","workers","infrastructure","data","intelligence","real-time","dashboards","cloudflare"] },
+    { id: "redflag", lead: "Red Flag \u2014 AI Customer Experience Engine", body: "Built AI-powered tool using LLMs to analyze customer feedback, classify churn risk across 5 dimensions, and surface actionable product improvements. Winner, Women in Tech Hackathon 2026", keywords: ["ai","llm","ml","churn","customer","cx","retention","hackathon","analytics","feedback","risk","experience"] },
+    { id: "rippling", lead: "Rippling AI Compliance Copilot", body: "Developed product strategy playbook with activation metrics, retention loops, and a 30-60-90 roadmap of prioritized experiments and analytics, projected to reduce compliance churn 15%", keywords: ["ai","product","strategy","roadmap","b2b","saas","hr","compliance","activation","retention","enterprise","copilot","playbook","30-60-90"] },
+    { id: "nvidia", lead: "NVIDIA Feedback Taxonomy", body: "Designed consumer and partner feedback classification system categorizing quality issues, feature requests, and competitive intel with velocity-based routing to product teams", keywords: ["partner","partnerships","ecosystem","hardware","semiconductor","chip","gpu","taxonomy","feedback","competitive","enterprise","b2b","classification","quality","developer"] },
+    { id: "deel", lead: "Strategic Product Integrations for Deel", body: "Identified product gaps through user research and competitive analysis, designed partnership integration strategy and GTM messaging that increased enterprise adoption 30%", keywords: ["partnerships","integrations","gtm","b2b","saas","hr","enterprise","positioning","api","ecosystem","strategic","payroll","global"] },
+    { id: "growth-sprint", lead: "Growth Strategy Sprint (BookMyShow, Pinterest, LinkedIn, TATA CLIQ)", body: "Analyzed activation and retention funnels to surface conversion gaps, designed product experiments that improved engagement 25% and week-one conversion 18%", keywords: ["consumer","growth","activation","retention","funnel","experiments","b2c","social","e-commerce","commerce","media","entertainment","engagement","conversion","mobile"] },
+    { id: "garden", lead: "SJSU Garden Volunteer Scheduler Agent", body: "Wrote a PRD with user flows and acceptance criteria for an agent that syncs sign-ups with Calendar and sends confirmations; prototyped workflow in Airtable and Apps Script", keywords: ["agent","ai","prd","scheduling","automation","workflow","operations","0-to-1","mvp","prototype","calendar","saas"] },
+    { id: "ev", lead: "EV Charging Network Reliability Analysis", body: "Modeled system reliability for an EV charging network using reliability block diagrams, analyzing failure modes and redundancy strategies for safety-critical infrastructure", keywords: ["ev","automotive","tesla","reliability","infrastructure","safety","systems","hardware","energy","sustainability","charging","grid","fleet"] },
+    { id: "drowsiness", lead: "OpenCV Drowsiness Detection (IJRASET publication)", body: "Co-authored published research on hybrid computer vision model for real-time drowsiness detection, applicable to driver monitoring and ADAS systems", keywords: ["computer vision","cv","ml","research","adas","automotive","tesla","safety","publication","opencv","hardware","driver","monitoring","autonomous","vehicle"] }
+  ],
+  leadership: [
+    { id: "growthx-demo-day", lead: "Winner, GrowthX Product Demo Day", body: "Led cross-functional team across design, engineering, and product to build MVP and 0-1 GTM strategy for AI-powered assistant AiSensy" },
+    { id: "swe", lead: "Outreach Team Lead, Society of Women Engineers (SWE), SJSU", body: "Organized professional development events, recruited corporate partnerships, and led 10+ recruitment and workshop initiatives" },
+    { id: "robotics", lead: "Robotics Club Lead, VTU", body: "Built interdisciplinary projects and organized campus-wide workshops with 500+ attendees" }
+  ],
+  education: [
+    { school: "San Jose State University", degree: "M.S. in Engineering Management (STEM), GPA 3.6/4.0", dates: "Jan 2025 \u2013 Dec 2026" },
+    { school: "Visvesvaraya Technological University", degree: "B.S. in Information Science & Engineering, GPA 3.56/4.0", dates: "Aug 2016 \u2013 May 2020" }
+  ],
+  publication: "Published in IJRASET: \u201CHybrid Model for OpenCV-based Drowsiness Detection\u201D \u2014 computer vision & ML"
+};
+
+const ROLE_DICTS = {
+  pm: { label: "Product Mgmt", terms: ["product manager","product management","senior pm","pm intern","roadmap","prd","jtbd","product strategy","feature prioritization","a/b testing","ship","shipped","launch","experimentation","cross-functional","stakeholder","user research","okr"] },
+  pmm: { label: "Product Marketing", terms: ["product marketing","pmm","positioning","messaging","go-to-market","gtm","launch","battlecard","win/loss","sales enablement","competitive intel","pitch deck","one-pager","customer insight","buyer journey","vertical marketing","demand gen"] },
+  gtm: { label: "GTM / Growth", terms: ["growth","gtm","go-to-market","sales enablement","pipeline","arr","expansion","icp","segmentation","playbook","outbound","account","sdr","funnel","activation","retention","cross-sell","upsell","revenue"] },
+  strategy: { label: "Strategy", terms: ["strategy","strategic","business case","value model","roi","market sizing","competitive analysis","executive","c-level","analyst","analyse","analyze","recommendation","quantified","modeled","framework","consulting"] }
+};
+
+const SKILLS_POOL = {
+  pm: {
+    "Product Management": "Product Strategy, Roadmaps, PRDs, OKRs, User Research (JTBD), Prioritization (RICE, MoSCoW), A/B Testing, Customer Journey Mapping, Launches, Competitive Analysis",
+    "Go-to-Market": "Messaging & Positioning, Sales Enablement, Battlecards, Win/Loss Analysis, Product Marketing, Pitch Decks, GTM Roadmaps",
+    "Data, Analytics & AI": "SQL, Python (Pandas), Tableau, Google Analytics 4, Excel, KPI Dashboards, Funnel Analysis, TensorFlow, LLMs, Cloudflare Workers, API Strategy",
+    "Tools": "Figma, Jira, Confluence, Airtable, Salesforce, HubSpot, Cursor, Claude Code, Replit, Bolt"
+  },
+  pmm: {
+    "Product Marketing": "Messaging & Positioning, Sales Enablement, Battlecards, Win/Loss Analysis, Competitive Intelligence, Pitch Decks, One-Pagers, Launch Campaigns, Customer Insights, Buyer Journey Analysis",
+    "Go-to-Market": "GTM Strategy, Product Launches, Cross-sell & Upsell, Channel Enablement, Content Development, Vertical Marketing, Demand Gen",
+    "Product & Strategy": "Product Roadmaps, PRDs, User Research (JTBD), A/B Testing, OKRs, Competitive Analysis",
+    "Data & Analytics": "SQL, Python, Tableau, Google Analytics 4, Excel, KPI Dashboards, Funnel Analysis, Experimentation Frameworks",
+    "Tools": "Figma, Jira, Confluence, Salesforce, HubSpot, Airtable, Cursor, Claude Code"
+  },
+  gtm: {
+    "Go-to-Market": "GTM Strategy, Sales Enablement, Pipeline Generation, Account Segmentation, ICP Development, Playbook Development, Vertical Strategy, Cross-sell & Expansion",
+    "Strategy & Analytics": "Business Case Development, Value Modeling, ROI Analysis, Market Sizing, Competitive Analysis, KPI Frameworks, Funnel Analysis",
+    "Product": "Product Strategy, Roadmaps, PRDs, User Research, A/B Testing, Launches",
+    "Data": "SQL, Python (Pandas), Tableau, Google Analytics 4, Excel, Salesforce CRM, HubSpot, KPI Dashboards",
+    "Tools": "Salesforce, HubSpot, Outreach, Apollo, ZoomInfo, Figma, Jira, Confluence, Cursor, Claude Code"
+  },
+  strategy: {
+    "Strategy & Analysis": "Business Case Development, Value Modeling, Quantified ROI Analysis, Market Sizing (Top-Down/Bottom-Up), Competitive Analysis, KPI & Metrics Frameworks, Executive Presentations, Strategic Recommendations",
+    "Product Management": "Product Strategy, Roadmaps, PRDs, OKRs, User Research, A/B Testing, Launches",
+    "Go-to-Market": "GTM Strategy, Messaging & Positioning, Sales Enablement, Vertical Strategy",
+    "Data & Analytics": "SQL, Python (Pandas), Tableau, Excel (Financial Modeling), Google Analytics 4, KPI Dashboards, Funnel Analysis",
+    "Tools": "Figma, Jira, Confluence, Salesforce, HubSpot, Airtable, Cursor, Claude Code"
+  }
+};
+
+const COVER_OPENERS = {
+  pm: [
+    "At LinkedIn, I sat across from 200+ enterprise customers and watched the same pattern: the product wasn't broken, but the path through it was. Cutting drop-off by 48% taught me that great PM work usually lives in the friction nobody's measuring yet \u2014 and {company}'s {role_title} role sits right at that intersection.",
+    "I shipped 4 AI-powered features at LinkedIn that drove $1.2M in new ARR, but the moment I'm proudest of was the one before: 200+ customer interviews that surfaced what nobody on the team had named yet. That kind of pattern recognition is what I want to bring to {company}.",
+    "Three years into product work at LinkedIn, I learned that the metric that moves is rarely the one in the deck \u2014 it's two layers down. Redesigning onboarding workflows that cut user drop-off 48% started with that instinct, and it's the same instinct I'd bring to {company}'s {role_title} role."
+  ],
+  pmm: [
+    "At Omnify, I marketed across 23 industry verticals before I ever called myself a PMM \u2014 which is probably why I think of positioning as a research problem first, a writing problem second. {company}'s {role_title} role looks like the kind of work where that bias would pay off.",
+    "The clearest signal I've had in product marketing came at Omnify: 30% qualified lead growth not from a bigger budget but from rewriting how we talked about who the product was for. That instinct \u2014 audience first, then message \u2014 is what I'd bring to {company}.",
+    "I launched 5+ B2B SaaS features at Omnify and learned that the launch itself is rarely the hard part. The hard part is the 6 weeks before, when you're still arguing about who the buyer actually is. {company}'s {role_title} role looks like exactly that kind of work."
+  ],
+  gtm: [
+    "At LinkedIn, I built a Vertical Engagement Model that drove 35% feature adoption and reduced enterprise churn $500K \u2014 not by changing the product, but by changing who heard about it first. {company}'s {role_title} role is the kind of GTM problem I want to solve next.",
+    "Three years at LinkedIn taught me that the gap between a feature shipping and a feature being adopted is where most companies lose. Cutting time-to-first-value 28% for Fortune 500 accounts was the work I most enjoyed \u2014 and {company}'s {role_title} role looks like more of it.",
+    "I've spent most of my career on the seam between product and sales \u2014 200+ customer interviews at LinkedIn, 5+ launches at Omnify with sales enablement built in. {company}'s {role_title} role sits right where I want to keep working."
+  ],
+  strategy: [
+    "At LinkedIn, I structured insight from 200+ enterprise customer interviews into the JTBD frameworks and roadmaps that drove $1.2M in new ARR. That work \u2014 turning fuzzy signal into committed bets \u2014 is what I want to do more of at {company}.",
+    "The strategy work I'm proudest of at LinkedIn wasn't the deck \u2014 it was the Vertical Engagement Model that drove 35% feature adoption and cut churn $500K, because it actually shipped. {company}'s {role_title} role looks like the same kind of work.",
+    "Three years at LinkedIn taught me that good strategy is the one that gets executed. Modeling onboarding redesigns that cut drop-off 48% for Fortune 500 accounts was the proof. {company}'s {role_title} role is where I'd want to keep proving it."
+  ]
+};
+
+const COVER_BODY = {
+  pm: "My background sits at the intersection of product and GTM: 4+ years across LinkedIn, GrowthX, and Omnify, with a track record of shipping AI-powered features end-to-end. At LinkedIn, I launched 4 features generating $1.2M ARR by partnering with Engineering, UX, and Sales on everything from JTBD synthesis to launch readouts. Before that, at Omnify, I built the team's first feature prioritization framework that lifted retention 20% and improved planning time 40%. I'm currently finishing my M.S. in Engineering Management at SJSU (Dec 2026) and looking for the next product team where I can keep doing this kind of work.",
+  pmm: "I bring 4+ years of product marketing and GTM work across LinkedIn, GrowthX, and Omnify. At LinkedIn, I owned positioning for 4 AI-powered feature launches that generated $1.2M in new ARR, including the messaging and sales enablement that got it there. At Omnify, I built the competitive intelligence repository \u2014 battlecards, win/loss analyses \u2014 that lifted customer retention 20% and drove 50% pipeline growth. I'm finishing my M.S. in Engineering Management at SJSU (Dec 2026), and your role looks like the kind of cross-functional PMM seat I'm ready for.",
+  gtm: "My background is 4+ years of GTM-adjacent product work across LinkedIn, GrowthX, and Omnify. At LinkedIn, I drove $1.2M in new ARR through 4 feature launches and built a Vertical Engagement Model that lifted feature adoption 35% and cut enterprise churn $500K. At Omnify, I drove 30% qualified lead growth and 50% pipeline growth through messaging and positioning experiments across mid-market and enterprise segments. I'm finishing my M.S. in Engineering Management at SJSU (Dec 2026), and this role looks like exactly the kind of GTM work I want to keep doing.",
+  strategy: "I bring 4+ years across LinkedIn, GrowthX, and Omnify, mostly working at the intersection of product strategy and execution. At LinkedIn, I structured insight from 200+ enterprise customer interviews into the OKR-driven roadmaps that launched 4 AI-powered features generating $1.2M ARR. At Omnify, I built the prioritization framework that increased customer retention 20% and reduced planning time 40%. I'm finishing my M.S. in Engineering Management at SJSU (Dec 2026), and this role looks like the kind of strategy seat where I want to keep doing this work."
+};
+
+const COVER_CLOSE = "I'd love to talk about how I can contribute to {company} \u2014 especially {jd_hook}. Thanks for considering my application.\n\nWarmly,\nKruthika";
+
+function detectRoleBucket(jdLower) {
+  const scores = {};
+  for (const [key, dict] of Object.entries(ROLE_DICTS)) {
+    let score = 0;
+    for (const term of dict.terms) {
+      const matches = jdLower.split(term).length - 1;
+      score += matches;
+    }
+    scores[key] = score;
+  }
+  const best = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
+  return { bucket: best[0], scores };
+}
+
+function extractKeywords(jd) {
+  const lower = jd.toLowerCase();
+  const allKeywords = new Set();
+  for (const dict of Object.values(ROLE_DICTS)) for (const t of dict.terms) allKeywords.add(t);
+  for (const proj of MASTER.projects) for (const k of proj.keywords) allKeywords.add(k.toLowerCase());
+  const extra = ["ai","llm","ml","cloud","api","saas","b2b","b2c","enterprise","mid-market","fortune 500","mobile","web","platform","data","analytics","sql","python","figma","jira","salesforce","hubspot","tableau","experimentation","a/b","funnel","activation","retention","churn","onboarding","compliance","integration","partnership","ecosystem","vertical","horizontal","developer","customer","stakeholder","cross-functional","metrics","kpi","okr","north star","mvp","0-to-1","scrappy","autonomous","ownership","ambiguity","insights","research","interviews","prd","roadmap","launch","ship","scale","grow","drive","build","own","execute","prioritize","collaborate"];
+  for (const k of extra) allKeywords.add(k);
+  const found = new Set();
+  for (const kw of allKeywords) {
+    if (lower.includes(kw)) found.add(kw);
+  }
+  return Array.from(found).sort((a, b) => b.length - a.length);
+}
+
+function pickProjects(jdLower, foundKeywords) {
+  const scored = MASTER.projects.map(p => {
+    let score = 0;
+    for (const k of p.keywords) {
+      const k2 = k.toLowerCase();
+      const occurrences = jdLower.split(k2).length - 1;
+      if (occurrences > 0) score += Math.min(occurrences, 3) * (k2.length > 4 ? 2 : 1);
+    }
+    return { proj: p, score };
+  });
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, 3);
+}
+
+function pickLeadership(roleBucket, jdLower) {
+  const order = {
+    pm: ["growthx-demo-day", "robotics", "swe"],
+    pmm: ["growthx-demo-day", "swe", "robotics"],
+    gtm: ["growthx-demo-day", "swe", "robotics"],
+    strategy: ["growthx-demo-day", "robotics", "swe"]
+  };
+  const swePriority = jdLower.includes("women") || jdLower.includes("diversity") || jdLower.includes("inclusion") || jdLower.includes("dei");
+  if (swePriority) return ["swe", "growthx-demo-day", "robotics"];
+  return order[roleBucket] || order.pm;
+}
+
+function extractJdHook(jd, company) {
+  const sentences = jd.split(/[\.\n]/).map(s => s.trim()).filter(s => s.length > 20 && s.length < 180);
+  const missionLike = sentences.find(s => /mission|believe|building|future of|reimagining|reinventing/i.test(s));
+  if (missionLike) return missionLike.replace(/^[^a-zA-Z]+/, "").toLowerCase().replace(/^./, c => c.toLowerCase());
+  return "the work you're doing in this space";
+}
+
+function buildCoverLetter(roleBucket, company, roleTitle, jd) {
+  const openers = COVER_OPENERS[roleBucket] || COVER_OPENERS.pm;
+  const opener = openers[Math.floor(Math.random() * openers.length)]
+    .replace(/\{company\}/g, company)
+    .replace(/\{role_title\}/g, roleTitle || "this");
+  const body = COVER_BODY[roleBucket] || COVER_BODY.pm;
+  const hook = extractJdHook(jd, company);
+  const close = COVER_CLOSE
+    .replace(/\{company\}/g, company)
+    .replace(/\{jd_hook\}/g, hook);
+  return opener + "\n\n" + body + "\n\n" + close;
+}
+
+let CURRENT = null;
+
+const jdInput = document.getElementById("jd");
+jdInput.addEventListener("input", () => {
+  document.getElementById("jd-stats").textContent = jdInput.value.length.toLocaleString() + " characters";
+});
+
+document.getElementById("run").addEventListener("click", () => {
+  document.getElementById("error").classList.add("hidden");
+  const company = document.getElementById("company").value.trim();
+  const titleOverride = document.getElementById("title-override").value.trim();
+  const jd = jdInput.value.trim();
+  if (!company) return showError("Add the company name.");
+  if (!titleOverride) return showError("Paste the exact job title from the JD.");
+  if (jd.length < 100) return showError("Paste the JD.");
+
+  const jdLower = jd.toLowerCase();
+  const detection = detectRoleBucket(jdLower);
+  const roleBucket = detection.bucket;
+  const keywords = extractKeywords(jd);
+  const projects = pickProjects(jdLower, keywords);
+  const leadership = pickLeadership(roleBucket, jdLower);
+  const coverLetter = buildCoverLetter(roleBucket, company, titleOverride, jd);
+
+  const totalMatchPossible = ROLE_DICTS[roleBucket].terms.length;
+  const matchScore = Math.min(100, Math.round(keywords.length / totalMatchPossible * 100));
+
+  CURRENT = {
+    company, titleOverride, jd,
+    roleBucket, keywords, projects, leadership, coverLetter, matchScore,
+    bullets: {
+      linkedin: [...MASTER.experience[0].bullets[roleBucket]],
+      growthx: [...MASTER.experience[1].bullets[roleBucket]],
+      omnify: [...MASTER.experience[2].bullets[roleBucket]]
+    }
+  };
+
+  renderOutput();
+});
+
+document.getElementById("clear").addEventListener("click", () => {
+  document.getElementById("company").value = "";
+  document.getElementById("title-override").value = "";
+  jdInput.value = "";
+  document.getElementById("jd-stats").textContent = "0 characters";
+  document.getElementById("output").classList.add("hidden");
+  document.getElementById("error").classList.add("hidden");
+  CURRENT = null;
+});
+
+function showError(msg) {
+  const e = document.getElementById("error");
+  e.textContent = msg;
+  e.classList.remove("hidden");
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function renderOutput() {
+  const C = CURRENT;
+  document.getElementById("output").classList.remove("hidden");
+  document.getElementById("s-bucket").textContent = ROLE_DICTS[C.roleBucket].label;
+  document.getElementById("s-kw").textContent = C.keywords.length;
+  document.getElementById("s-proj").textContent = "3 of 9";
+  document.getElementById("s-score").textContent = C.matchScore + "%";
+
+  document.getElementById("kw-list").innerHTML = C.keywords
+    .map(k => `<span class="kw">${escapeHtml(k)}</span>`).join("");
+
+  document.getElementById("proj-debug").innerHTML = C.projects
+    .map(p => `<div class="proj-row"><div class="name">${escapeHtml(p.proj.lead)} <span class="score">(score: ${p.score})</span></div></div>`).join("");
+
+  let html = `
+    <div class="header-block">
+      <div class="name">${escapeHtml(MASTER.name)}</div>
+      <div class="title">${escapeHtml(C.titleOverride)}</div>
+      <div class="contact">${escapeHtml(MASTER.contact)}</div>
+    </div>
+    <div class="section-head">Skills</div>`;
+  for (const [cat, items] of Object.entries(SKILLS_POOL[C.roleBucket])) {
+    html += `<div><strong>${escapeHtml(cat)}:</strong> ${escapeHtml(items)}</div>`;
+  }
+  html += `<div class="section-head">Experience</div>`;
+  MASTER.experience.forEach((role, idx) => {
+    const bullets = C.bullets[role.id];
+    html += `<div class="role">
+      <div class="role-head"><span>${escapeHtml(role.company)}</span><span style="font-weight:400;">${escapeHtml(role.dates)}</span></div>
+      <div class="role-sub">${escapeHtml(role.title)}</div>
+      <ul>${bullets.map((b, bi) => `<li><textarea class="editable" data-role="${role.id}" data-i="${bi}">${escapeHtml(b)}</textarea></li>`).join("")}</ul>
+    </div>`;
+  });
+  html += `<div class="section-head">Projects</div>`;
+  C.projects.forEach(p => {
+    html += `<div style="margin-bottom:6px;"><strong>${escapeHtml(p.proj.lead)}:</strong> ${escapeHtml(p.proj.body)}</div>`;
+  });
+  html += `<div class="section-head">Leadership</div>`;
+  C.leadership.forEach(id => {
+    const item = MASTER.leadership.find(l => l.id === id);
+    if (item) html += `<div style="margin-bottom:6px;"><strong>${escapeHtml(item.lead)}:</strong> ${escapeHtml(item.body)}</div>`;
+  });
+  html += `<div class="section-head">Education</div>`;
+  MASTER.education.forEach(ed => {
+    html += `<div style="display:flex;justify-content:space-between;"><span><strong>${escapeHtml(ed.school)}</strong> \u2014 ${escapeHtml(ed.degree)}</span><span>${escapeHtml(ed.dates)}</span></div>`;
+  });
+  html += `<div style="font-style:italic;margin-top:4px;">${escapeHtml(MASTER.publication)}</div>`;
+  document.getElementById("resume-preview").innerHTML = html;
+
+  document.querySelectorAll(".editable[data-role]").forEach(el => {
+    el.addEventListener("input", e => {
+      const r = e.target.dataset.role;
+      const i = parseInt(e.target.dataset.i);
+      CURRENT.bullets[r][i] = e.target.value;
+    });
+    el.style.height = "auto";
+    el.style.height = (el.scrollHeight + 4) + "px";
+    el.addEventListener("input", () => {
+      el.style.height = "auto";
+      el.style.height = (el.scrollHeight + 4) + "px";
+    });
+  });
+
+  const coverEdit = document.getElementById("cover-edit");
+  coverEdit.value = C.coverLetter;
+  coverEdit.addEventListener("input", () => {
+    CURRENT.coverLetter = coverEdit.value;
+  });
+}
+
+function buildResumeDocx() {
+  const C = CURRENT;
+  const d = docx;
+  const FONT = "Calibri";
+  const SZ_BODY = 20, SZ_NAME = 32, SZ_SECTION = 22;
+  const RIGHT_TAB = 10224;
+
+  const sectionHeader = (label) => new d.Paragraph({
+    spacing: { before: 60, after: 20 },
+    border: { bottom: { style: d.BorderStyle.SINGLE, size: 6, color: "404040", space: 2 } },
+    children: [new d.TextRun({ text: label.toUpperCase(), font: FONT, size: SZ_SECTION, bold: true, color: "000000" })]
+  });
+  const roleLine = (left, right) => new d.Paragraph({
+    spacing: { before: 40, after: 0 },
+    tabStops: [{ type: d.TabStopType.RIGHT, position: RIGHT_TAB }],
+    children: [
+      new d.TextRun({ text: left, font: FONT, size: SZ_BODY, bold: true, color: "000000" }),
+      new d.TextRun({ text: "\t", font: FONT, size: SZ_BODY }),
+      new d.TextRun({ text: right, font: FONT, size: SZ_BODY, color: "000000" })
+    ]
+  });
+  const subRoleLine = (left, right) => new d.Paragraph({
+    spacing: { before: 0, after: 20 },
+    tabStops: [{ type: d.TabStopType.RIGHT, position: RIGHT_TAB }],
+    children: [
+      new d.TextRun({ text: left, font: FONT, size: SZ_BODY, italics: true, color: "000000" }),
+      new d.TextRun({ text: "\t", font: FONT, size: SZ_BODY }),
+      new d.TextRun({ text: right, font: FONT, size: SZ_BODY, italics: true, color: "404040" })
+    ]
+  });
+  const bullet = (text) => new d.Paragraph({
+    numbering: { reference: "bullets", level: 0 },
+    spacing: { before: 0, after: 20, line: 252 },
+    children: [new d.TextRun({ text, font: FONT, size: SZ_BODY, color: "000000" })]
+  });
+  const skillLine = (cat, items) => new d.Paragraph({
+    spacing: { before: 0, after: 20, line: 252 },
+    children: [
+      new d.TextRun({ text: cat + ": ", font: FONT, size: SZ_BODY, bold: true, color: "000000" }),
+      new d.TextRun({ text: items, font: FONT, size: SZ_BODY, color: "000000" })
+    ]
+  });
+  const leadIn = (lead, body) => new d.Paragraph({
+    numbering: { reference: "bullets", level: 0 },
+    spacing: { before: 0, after: 20, line: 252 },
+    children: [
+      new d.TextRun({ text: lead + ": ", font: FONT, size: SZ_BODY, bold: true, color: "000000" }),
+      new d.TextRun({ text: body, font: FONT, size: SZ_BODY, color: "000000" })
+    ]
+  });
+
+  const content = [
+    new d.Paragraph({
+      alignment: d.AlignmentType.CENTER, spacing: { before: 0, after: 30 },
+      children: [new d.TextRun({ text: MASTER.name, font: FONT, size: SZ_NAME, bold: true, color: "000000" })]
+    }),
+    new d.Paragraph({
+      alignment: d.AlignmentType.CENTER, spacing: { before: 0, after: 30 },
+      children: [new d.TextRun({ text: C.titleOverride, font: FONT, size: 22, color: "404040", italics: true })]
+    }),
+    new d.Paragraph({
+      alignment: d.AlignmentType.CENTER, spacing: { before: 0, after: 60 },
+      children: [new d.TextRun({ text: MASTER.contact, font: FONT, size: SZ_BODY, color: "000000" })]
+    }),
+    sectionHeader("Skills")
+  ];
+  for (const [cat, items] of Object.entries(SKILLS_POOL[C.roleBucket])) content.push(skillLine(cat, items));
+
+  content.push(sectionHeader("Experience"));
+  MASTER.experience.forEach(role => {
+    content.push(roleLine(role.company, role.dates));
+    content.push(subRoleLine(role.title, role.location));
+    const bullets = C.bullets[role.id];
+    bullets.forEach(b => content.push(bullet(b)));
+  });
+
+  content.push(sectionHeader("Projects"));
+  C.projects.forEach(p => content.push(leadIn(p.proj.lead, p.proj.body)));
+
+  content.push(sectionHeader("Leadership & Achievements"));
+  C.leadership.forEach(id => {
+    const item = MASTER.leadership.find(l => l.id === id);
+    if (item) content.push(leadIn(item.lead, item.body));
+  });
+
+  content.push(sectionHeader("Education"));
+  MASTER.education.forEach(ed => {
+    content.push(new d.Paragraph({
+      spacing: { before: 0, after: 0 },
+      tabStops: [{ type: d.TabStopType.RIGHT, position: RIGHT_TAB }],
+      children: [
+        new d.TextRun({ text: ed.school, font: FONT, size: SZ_BODY, bold: true, color: "000000" }),
+        new d.TextRun({ text: " \u2014 " + ed.degree, font: FONT, size: SZ_BODY, color: "000000" }),
+        new d.TextRun({ text: "\t", font: FONT, size: SZ_BODY }),
+        new d.TextRun({ text: ed.dates, font: FONT, size: SZ_BODY, color: "000000" })
+      ]
+    }));
+  });
+  content.push(new d.Paragraph({
+    spacing: { before: 0, after: 0 },
+    children: [new d.TextRun({ text: MASTER.publication, font: FONT, size: SZ_BODY, italics: true, color: "000000" })]
+  }));
+
+  return new d.Document({
+    creator: "Kruthika Sonwalkar",
+    title: "Resume",
+    styles: { default: { document: { run: { font: FONT, size: SZ_BODY } } } },
+    numbering: {
+      config: [{
+        reference: "bullets",
+        levels: [{
+          level: 0, format: d.LevelFormat.BULLET, text: "\u2022", alignment: d.AlignmentType.LEFT,
+          style: { paragraph: { indent: { left: 288, hanging: 216 } } }
+        }]
+      }]
+    },
+    sections: [{
+      properties: { page: { size: { width: 12240, height: 15840 }, margin: { top: 648, right: 864, bottom: 648, left: 864 } } },
+      children: content
+    }]
+  });
+}
+
+function buildCoverDocx() {
+  const C = CURRENT;
+  const d = docx;
+  const FONT = "Calibri";
+  const SZ_BODY = 22;
+  const paras = [
+    new d.Paragraph({ spacing: { before: 0, after: 60 }, children: [new d.TextRun({ text: MASTER.name, font: FONT, size: 30, bold: true, color: "000000" })] }),
+    new d.Paragraph({ spacing: { before: 0, after: 60 }, children: [new d.TextRun({ text: MASTER.contact, font: FONT, size: SZ_BODY, color: "000000" })] }),
+    new d.Paragraph({ spacing: { before: 120, after: 60 }, children: [new d.TextRun({ text: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }), font: FONT, size: SZ_BODY, color: "000000" })] }),
+    new d.Paragraph({ spacing: { before: 0, after: 120 }, children: [new d.TextRun({ text: "Hiring Team, " + C.company, font: FONT, size: SZ_BODY, color: "000000" })] })
+  ];
+  C.coverLetter.split(/\n\n+/).forEach(p => {
+    paras.push(new d.Paragraph({ spacing: { before: 0, after: 160, line: 320 }, children: [new d.TextRun({ text: p.trim(), font: FONT, size: SZ_BODY, color: "000000" })] }));
+  });
+  return new d.Document({
+    creator: "Kruthika Sonwalkar", title: "Cover Letter",
+    styles: { default: { document: { run: { font: FONT, size: SZ_BODY } } } },
+    sections: [{ properties: { page: { size: { width: 12240, height: 15840 }, margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } } }, children: paras }]
+  });
+}
+
+async function downloadDocx(doc, filename) {
+  const blob = await docx.Packer.toBlob(doc);
+  saveAs(blob, filename);
+}
+
+document.getElementById("dl-resume").addEventListener("click", async () => {
+  if (!CURRENT) return;
+  const safe = CURRENT.company.replace(/[^a-z0-9]+/gi, "_");
+  await downloadDocx(buildResumeDocx(), "Kruthika_Sonwalkar_" + safe + ".docx");
+  document.getElementById("dl-status").textContent = "Downloaded.";
+  setTimeout(() => document.getElementById("dl-status").textContent = "", 2000);
+});
+document.getElementById("dl-cover").addEventListener("click", async () => {
+  if (!CURRENT) return;
+  const safe = CURRENT.company.replace(/[^a-z0-9]+/gi, "_");
+  await downloadDocx(buildCoverDocx(), "Kruthika_Sonwalkar_CoverLetter_" + safe + ".docx");
+  document.getElementById("dl-status").textContent = "Downloaded.";
+  setTimeout(() => document.getElementById("dl-status").textContent = "", 2000);
+});
+document.getElementById("copy-cover").addEventListener("click", () => {
+  if (!CURRENT) return;
+  navigator.clipboard.writeText(CURRENT.coverLetter).then(() => {
+    document.getElementById("dl-status").textContent = "Copied.";
+    setTimeout(() => document.getElementById("dl-status").textContent = "", 2000);
+  });
+});
+</script>
+</body>
+</html>
